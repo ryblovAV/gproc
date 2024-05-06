@@ -92,6 +92,7 @@
 	 remove_test_pool/1]).
 
 -include("gproc_int.hrl").
+-include_lib("kernel/include/logger.hrl").
 
 -define(POOL(Pool), {p,l,{?MODULE,Pool}}).
 -define(POOL_CUR(Pool), {c,l,{?MODULE,Pool,cur}}).
@@ -315,6 +316,7 @@ pick(Pool) ->
 %% Like {@link pick/1}, but returns the worker pid instead of the name.
 %% @end
 pick_worker(Pool) ->
+    ?LOG_INFO(#{what => debug_pick_worker, pool => Pool}),
     case gproc:get_value(?POOL(Pool), shared) of
         {0, _} -> false;
         {Sz, Type} when Type == round_robin; Type == random ->
