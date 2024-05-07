@@ -696,6 +696,7 @@ code_change(_, S, _) ->
 
 
 new_(Pool, Type, Opts) ->
+    ?LOG_INFO(#{what => debug_gproc_pool_new, pool => Pool, type => Type, opts => Opts}),
     valid_type(Type),
     Size = proplists:get_value(size, Opts, 0),
     Workers = lists:seq(1, Size),
