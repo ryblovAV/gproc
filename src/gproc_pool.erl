@@ -627,6 +627,7 @@ init([]) ->
 
 %% @private
 call(Req) ->
+    ?LOG_DEBUG(#{what => debug_gproc_pool_call, req => Req}),
     case gen_server:call(?MODULE, Req) of
         badarg ->
             error(badarg);
