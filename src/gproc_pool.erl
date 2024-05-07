@@ -630,7 +630,7 @@ call(Req) ->
     ?LOG_DEBUG(#{what => debug_gproc_pool_call, req => Req}),
     case gen_server:call(?MODULE, Req) of
         badarg ->
-            
+            ?LOG_DEBUG(#{what => debug_gproc_pool_call1}),
             error(badarg);
         {badarg, Reason} ->
             ?LOG_DEBUG(#{what => debug_gproc_pool_call2}),
