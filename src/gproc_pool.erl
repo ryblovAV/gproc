@@ -631,8 +631,8 @@ call(Req) ->
     
     try gen_server:call(?MODULE, Req)
     catch 
-        Error:Reason:Stacktrace ->
-            ?LOG_DEBUG(#{what => debug_gproc_pool_error, error => Error, reason => Reason, stacktrace => Stacktrace}),
+        E:R:S ->
+            ?LOG_DEBUG(#{what => debug_gproc_pool_error, error => E, reason => R, stacktrace => S})
     end,        
     
     case gen_server:call(?MODULE, Req) of
