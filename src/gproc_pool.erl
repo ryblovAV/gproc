@@ -320,13 +320,13 @@ pick_worker(Pool) ->
     ?LOG_INFO(#{what => debug_pick_worker1, pool => Pool}),
     case gproc:get_value(?POOL(Pool), shared) of
         {0, _} -> 
-            ?LOG_ERROR(#{what => debug_pick_worker3, pool => Pool}),
+            ?LOG_INFO(#{what => debug_pick_worker3, pool => Pool}),
             false;
         {Sz, Type} when Type == round_robin; Type == random ->
-            ?LOG_ERROR(#{what => debug_pick_worker4, pool => Pool, sz => Sz, type => Type}),
+            ?LOG_INFO(#{what => debug_pick_worker4, pool => Pool, sz => Sz, type => Type}),
             pick(Pool, Sz, Type, pid);
         _ ->
-            ?LOG_ERROR(#{what => debug_pick_worker2, pool => Pool}),
+            ?LOG_INFO(#{what => debug_pick_worker2, pool => Pool}),
             error(badarg)
     end.
 
