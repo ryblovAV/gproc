@@ -302,14 +302,14 @@ worker_pool(Pool) ->
 %% worker, or if `Pool' is not a valid pool.
 %% @end
 pick(Pool) ->
-    error(badarg2).
-    % case gproc:get_value(?POOL(Pool), shared) of
-    %     {0, _} -> false;
-    %     {Sz, Type} when Type == round_robin; Type == random ->
-    %         pick(Pool, Sz, Type, name);
-    %     _ ->
-    %         error(badarg)
-    % end.
+    ?LOG_ERROR(#{what => debug_pick, pool => Pool}),
+    case gproc:get_value(?POOL(Pool), shared) of
+        {0, _} -> false;
+        {Sz, Type} when Type == round_robin; Type == random ->
+            pick(Pool, Sz, Type, name);
+        _ ->
+            error(badarg)
+    end.
 
 %% @spec pick_worker(Pool::any()) -> pid() | false
 %% @doc Pick a worker pid from the pool given the pool's load-balancing algorithm.
@@ -317,15 +317,15 @@ pick(Pool) ->
 %% Like {@link pick/1}, but returns the worker pid instead of the name.
 %% @end
 pick_worker(Pool) ->
-    error(badarg2).
-    % case gproc:get_value(?POOL(Pool), shared) of
-    %     {0, _} -> false;
-    %     {Sz, Type} when Type == round_robin; Type == random ->
-    %         pick(Pool, Sz, Type, pid);
-    %     _ ->
-    %         ?LOG_ERROR(#{what => debug_pick_worker, pool => Pool}),
-    %         error(badarg)
-    % end.
+    ?LOG_ERROR(#{what => debug_pick_worker, pool => Pool}),
+    case gproc:get_value(?POOL(Pool), shared) of
+        {0, _} -> false;
+        {Sz, Type} when Type == round_robin; Type == random ->
+            pick(Pool, Sz, Type, pid);
+        _ ->
+            ?LOG_ERROR(#{what => debug_pick_worker, pool => Pool}),
+            error(badarg)
+    end.
 
 %% @spec pick(Pool::any(), Value::any()) -> GprocName | false
 %% @doc Pick a worker from the pool based on `Value'.
@@ -340,15 +340,14 @@ pick_worker(Pool) ->
 %% selecting a worker.
 %% @end
 pick(Pool, N) ->
-    aaa
-    error(badarg2).
-    % case gproc:get_value(?POOL(Pool), shared) of
-    %     {0, _} -> false;
-    %     {Sz, Type} when Type == hash; Type == direct ->
-    %         pick(Pool, Sz, Type, N, name);
-    %     _ ->
-    %         error(badarg)
-    % end.
+    ?LOG_ERROR(#{what => debug_pick, pool => Pool, n => N}),
+    case gproc:get_value(?POOL(Pool), shared) of
+        {0, _} -> false;
+        {Sz, Type} when Type == hash; Type == direct ->
+            pick(Pool, Sz, Type, N, name);
+        _ ->
+            error(badarg)
+    end.
 
 %% @spec pick_worker(Pool::any(), Value::any()) -> pid() | false
 %% @doc Pick a worker pid from the pool given the pool's load-balancing algorithm.
