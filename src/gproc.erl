@@ -1666,16 +1666,21 @@ get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
             ets:lookup_element(?TAB, {Key, Pid}, 3)
     end;
 get_value1({T,_,_} = K, shared) when T==c; T==a; T==p; T==r ->
-    ?LOG_INFO(#{what => debug_get_value2}),
+    ?LOG_INFO(#{what => debug_get_value2, k = K, t = T}),
     Key = case T of
 	      c  -> {K, shared};
 	      p  -> {K, shared};
-              r  -> {K, shared};
+          r  -> {K, shared};
 	      a  -> {K, a}
 	  end,
+    ?LOG_INFO(#{what => debug_get_value2_0, key = Key}),
     case ets:lookup(?TAB, Key) of
-	[{_, shared, Value}] -> Value;
-	_ -> ?THROW_GPROC_ERROR(badarg)
+	[{_, shared, Value}] ->
+        ?LOG_INFO(#{what => debug_get_value2_1, value = Value}),
+        Value;
+	_ -> 
+        ?LOG_INFO(#{what => debug_get_value2_2}),
+        ?THROW_GPROC_ERROR(badarg)
     end;
 get_value1(_, _) ->
     ?LOG_INFO(#{what => debug_get_value3}),
