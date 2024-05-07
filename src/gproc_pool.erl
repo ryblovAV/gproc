@@ -317,13 +317,13 @@ pick(Pool) ->
 %% Like {@link pick/1}, but returns the worker pid instead of the name.
 %% @end
 pick_worker(Pool) ->
-    ?LOG_ERROR(#{what => debug_pick_worker, pool => Pool}),
+    ?LOG_INFO(#{what => debug_pick_worker1, pool => Pool}),
     case gproc:get_value(?POOL(Pool), shared) of
         {0, _} -> false;
         {Sz, Type} when Type == round_robin; Type == random ->
             pick(Pool, Sz, Type, pid);
         _ ->
-            ?LOG_ERROR(#{what => debug_pick_worker, pool => Pool}),
+            ?LOG_ERROR(#{what => debug_pick_worker2, pool => Pool}),
             error(badarg)
     end.
 
