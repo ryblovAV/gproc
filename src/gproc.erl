@@ -1656,8 +1656,9 @@ get_value(Key, Pid) ->
     ?CATCH_GPROC_ERROR(get_value1(Key, Pid), [Key, Pid]).
 
 get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
+    ?LOG_INFO(#{what => debug_get_value1}),
     if T==n; T==a; T==rc ->
-            case ets:lookup(?TAB, {Key, T}) of
+            case ets:lookup(?TAB, {Key, T}) of                
                 [{_, P, Value}] when P == Pid -> Value;
                 _ -> ?THROW_GPROC_ERROR(badarg)
             end;
@@ -1665,6 +1666,7 @@ get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
             ets:lookup_element(?TAB, {Key, Pid}, 3)
     end;
 get_value1({T,_,_} = K, shared) when T==c; T==a; T==p; T==r ->
+    ?LOG_INFO(#{what => debug_get_value2}),
     Key = case T of
 	      c  -> {K, shared};
 	      p  -> {K, shared};
@@ -1676,6 +1678,7 @@ get_value1({T,_,_} = K, shared) when T==c; T==a; T==p; T==r ->
 	_ -> ?THROW_GPROC_ERROR(badarg)
     end;
 get_value1(_, _) ->
+    ?LOG_INFO(#{what => debug_get_value3}),
     ?THROW_GPROC_ERROR(badarg).
 
 
