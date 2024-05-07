@@ -1653,6 +1653,11 @@ get_value_shared(Key) ->
 %%
 get_value(Key, Pid) ->
     ?LOG_INFO(#{what => debug_get_value, key => Key, pid => Pid}),
+    try get_value1(Key, Pid)
+	catch
+        Error:Reason ->
+            ?LOG_INFO(#{what => get_value_error, err => Error, reason => Reason})
+	end,
     ?CATCH_GPROC_ERROR(get_value1(Key, Pid), [Key, Pid]).
 
 get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
