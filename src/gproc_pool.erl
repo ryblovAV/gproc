@@ -641,6 +641,7 @@ call(Req) ->
 
 %% @private
 handle_call(Req, From, S) ->
+    ?LOG_DEBUG(#{what => debug_gproc_pool_handle_call, req => Req, from => From, s => S}),
     try handle_call_(Req, From, S)
     catch
         error:Reason ->
