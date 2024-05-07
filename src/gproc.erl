@@ -141,6 +141,7 @@
 
 -include("gproc_int.hrl").
 -include("gproc.hrl").
+-include_lib("kernel/include/logger.hrl").
 
 -export_type([scope/0, type/0, key/0,
               context/0, sel_pattern/0, sel_scope/0, sel_context/0,
@@ -1651,6 +1652,7 @@ get_value_shared(Key) ->
 %% @end
 %%
 get_value(Key, Pid) ->
+    ?LOG_INFO(#{what => debug_get_value, key => Key, pid => Pid}),
     ?CATCH_GPROC_ERROR(get_value1(Key, Pid), [Key, Pid]).
 
 get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
