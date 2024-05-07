@@ -1673,7 +1673,9 @@ get_value1({T,_,_} = Key, Pid) when is_pid(Pid) ->
 get_value1({T,_,_} = K, shared) when T==c; T==a; T==p; T==r ->
     ?LOG_INFO(#{what => debug_get_value2, k => K, t => T}),
     Tables = ets:all(),
-    ?LOG_INFO(#{what => debug_get_value2_0_1, tables => Tables}),
+    ?LOG_INFO(#{what => debug_get_value2_0_1, table => ?TAB, tables => Tables}),
+    First = ets:first(?TAB),
+    ?LOG_INFO(#{what => debug_get_value2_0_2, first => First}),
 
     Key = case T of
 	      c  -> {K, shared};
