@@ -302,13 +302,14 @@ worker_pool(Pool) ->
 %% worker, or if `Pool' is not a valid pool.
 %% @end
 pick(Pool) ->
-    case gproc:get_value(?POOL(Pool), shared) of
-        {0, _} -> false;
-        {Sz, Type} when Type == round_robin; Type == random ->
-            pick(Pool, Sz, Type, name);
-        _ ->
-            error(badarg)
-    end.
+    error(badarg2).
+    % case gproc:get_value(?POOL(Pool), shared) of
+    %     {0, _} -> false;
+    %     {Sz, Type} when Type == round_robin; Type == random ->
+    %         pick(Pool, Sz, Type, name);
+    %     _ ->
+    %         error(badarg)
+    % end.
 
 %% @spec pick_worker(Pool::any()) -> pid() | false
 %% @doc Pick a worker pid from the pool given the pool's load-balancing algorithm.
