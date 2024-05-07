@@ -340,6 +340,7 @@ pick_worker(Pool) ->
 %% selecting a worker.
 %% @end
 pick(Pool, N) ->
+    aaa
     error(badarg2).
     % case gproc:get_value(?POOL(Pool), shared) of
     %     {0, _} -> false;
