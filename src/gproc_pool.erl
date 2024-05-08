@@ -706,12 +706,18 @@ code_change(_, S, _) ->
 new_(Pool, Type, Opts) ->
     ?LOG_INFO(#{what => debug_gproc_pool_new_, pool => Pool, type => Type, opts => Opts}),
     valid_type(Type),
+    ?LOG_INFO(#{what => debug_gproc_pool_new_1, pool => Pool, type => Type, opts => Opts}),
     Size = proplists:get_value(size, Opts, 0),
+    ?LOG_INFO(#{what => debug_gproc_pool_new_2, size => Size}),
     Workers = lists:seq(1, Size),
+    ?LOG_INFO(#{what => debug_gproc_pool_new_3, workers => Workers}),
     K = ?POOL(Pool),
+    ?LOG_INFO(#{what => debug_gproc_pool_new_4, k => K}),
     try gproc:reg_shared(K, {Size, Type})
     catch
-        error:_ -> error(exists)
+        error:Reason ->
+            ?LOG_INFO(#{what => debug_gproc_pool_new_error_4, reason => Reason}),
+            error(exists)
     end,
     Opts1 =
         case lists:keyfind(auto_size, 1, Opts) of
