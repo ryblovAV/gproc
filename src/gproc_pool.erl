@@ -658,9 +658,7 @@ handle_call(Req, From, S) ->
     catch
         error:Reason ->
             {reply, {badarg, Reason}, S}
-    end;
-handle_call(_) ->
-
+    end.
 handle_call_({new, Pool, Type, Opts}, _, S) ->
     new_(Pool, Type, Opts),
     {reply, ok, S};
