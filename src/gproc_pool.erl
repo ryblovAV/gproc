@@ -655,6 +655,7 @@ handle_call(Req, From, S) ->
             {reply, {badarg, Reason}, S}
     end.
 handle_call_({new, Pool, Type, Opts}, _, S) ->
+    ?LOG_DEBUG(#{what => debug_gproc_pool_handle_call_new, pool => Pool, type => Type, opts => Opts}),
     new_(Pool, Type, Opts),
     {reply, ok, S};
 handle_call_({delete, Pool}, _, S) ->
