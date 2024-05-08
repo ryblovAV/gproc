@@ -630,13 +630,6 @@ init([]) ->
 %% @private
 call(Req) ->
     ?LOG_DEBUG(#{what => debug_gproc_pool_call, req => Req}),
-    
-    try gen_server:call(?MODULE, Req)
-    catch 
-        E:R:S ->
-            ?LOG_DEBUG(#{what => debug_gproc_pool_error, error => E, reason => R, stacktrace => S})
-    end,        
-    
     case gen_server:call(?MODULE, Req) of
         badarg ->
             ?LOG_DEBUG(#{what => debug_gproc_pool_call1}),
@@ -658,6 +651,7 @@ handle_call(Req, From, S) ->
     try handle_call_(Req, From, S)
     catch
         error:Reason ->
+            ?LOG_DEBUG(#{what => debug_gproc_pool_handle_call_error, req => Req, from => From, s => S, reason => Reason}),
             {reply, {badarg, Reason}, S}
     end.
 handle_call_({new, Pool, Type, Opts}, _, S) ->
@@ -709,7 +703,7 @@ code_change(_, S, _) ->
 
 
 new_(Pool, Type, Opts) ->
-    ?LOG_INFO(#{what => debug_gproc_pool_new, pool => Pool, type => Type, opts => Opts}),
+    ?LOG_INFO(#{what => debug_gproc_pool_new_, pool => Pool, type => Type, opts => Opts}),
     valid_type(Type),
     Size = proplists:get_value(size, Opts, 0),
     Workers = lists:seq(1, Size),
