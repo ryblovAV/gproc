@@ -128,6 +128,7 @@ new(Pool, Type, Opts) when Type == round_robin;
                            Type == hash;
                            Type == direct;
                            Type == claim ->
+    ?LOG_DEBUG(#{what => debug_gproc_pool_new, pool => Pool, type => Type, Opts => Opts}),                            
     call({new, Pool, Type, Opts}).
 
 %% @spec delete(Pool::any()) -> true
