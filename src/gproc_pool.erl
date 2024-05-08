@@ -619,6 +619,7 @@ pool_size(Pool) ->
 
 %% @private
 start_link() ->
+    ?LOG_DEBUG(#{what => debug_gproc_pool_start_link}),
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% @private
@@ -657,7 +658,8 @@ handle_call(Req, From, S) ->
     catch
         error:Reason ->
             {reply, {badarg, Reason}, S}
-    end.
+    end;
+handle_call(_) ->
 
 handle_call_({new, Pool, Type, Opts}, _, S) ->
     new_(Pool, Type, Opts),
