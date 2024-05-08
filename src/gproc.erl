@@ -664,7 +664,10 @@ reg_or_locate1(Key) ->
     reg_or_locate1(Key, default(Key), self()).
 
 valid_key(Key) ->
-    gproc_lib:valid_key(Key).
+    ?LOG_INFO(#{what => debug_valid_key_1, k => Key}),
+    Key2 = gproc_lib:valid_key(Key),
+    ?LOG_INFO(#{what => debug_valid_key_2, k => Key2}),
+    Key2.
 
 default({T,_,_}) when T==c -> 0;
 default(_) -> undefined.
@@ -1263,6 +1266,7 @@ reg_shared1({p,l,_} = Key, Value, As) ->
 reg_shared1({rc,l,_} = Key, undefined, As) ->
     call({reg_shared, Key, undefined, As, reg});
 reg_shared1(_, _, _) ->
+    ?LOG_INFO(#{what => debug_vreg_shared_badarg}),
     ?THROW_GPROC_ERROR(badarg).
 
 %% @spec mreg(type(), scope(), [{Key::any(), Value::any()}]) -> true
