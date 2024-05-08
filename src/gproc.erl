@@ -1254,19 +1254,24 @@ reg_shared(Key, Value, Attrs) when is_list(Attrs) ->
 
 %% @private
 reg_shared1({_,g,_} = Key, Value, As) ->
+    ?LOG_INFO(#{what => debug_vreg_shared1_1}),
     %% anything global
     ?CHK_DIST,
     gproc_dist:reg_shared(Key, Value, As);
 reg_shared1({a,l,_} = Key, undefined, As) ->
+    ?LOG_INFO(#{what => debug_vreg_shared1_2}),
     call({reg_shared, Key, undefined, As, reg});
 reg_shared1({c,l,_} = Key, Value, As) when is_integer(Value) ->
+    ?LOG_INFO(#{what => debug_vreg_shared1_3}),
     call({reg_shared, Key, Value, As, reg});
 reg_shared1({p,l,_} = Key, Value, As) ->
+    ?LOG_INFO(#{what => debug_vreg_shared1_4}),
     call({reg_shared, Key, Value, As, reg});
 reg_shared1({rc,l,_} = Key, undefined, As) ->
+    ?LOG_INFO(#{what => debug_vreg_shared1_5}),
     call({reg_shared, Key, undefined, As, reg});
 reg_shared1(_, _, _) ->
-    ?LOG_INFO(#{what => debug_vreg_shared_badarg}),
+    ?LOG_INFO(#{what => debug_vreg_shared1_6}),
     ?THROW_GPROC_ERROR(badarg).
 
 %% @spec mreg(type(), scope(), [{Key::any(), Value::any()}]) -> true
